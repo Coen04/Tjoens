@@ -237,8 +237,8 @@
                 width: 100% !important;
             }
 
-            /* 1. Mengatur grid katalog produk agar pas 2 kolom rapi dan tidak melebar */
-            .catalog-grid, .product-grid, #product-list, .products-container {
+            /* 1. Perbaikan: Menggunakan .products-grid (pakai 's') agar sesuai dengan HTML */
+            .products-grid, #product-list {
                 display: grid !important;
                 grid-template-columns: repeat(2, 1fr) !important;
                 gap: 10px !important;
@@ -256,7 +256,7 @@
             }
 
             /* Menyesuaikan ukuran gambar produk di dalam katalog agar proporsional */
-            .product-img-wrap, .product-card img {
+            .product-card img, .product-img-wrap img {
                 height: 140px !important;
                 object-fit: cover !important;
                 width: 100% !important;
