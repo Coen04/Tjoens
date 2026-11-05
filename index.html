@@ -236,18 +236,55 @@
                 overflow-x: hidden !important;
                 width: 100% !important;
             }
+            /* 1. Header Katalog: Tulisan & Tombol Filter Bersebelahan & Bisa Di-slide */
+            .section-header {
+                display: flex !important;
+                flex-direction: row !important;
+                justify-content: space-between !important;
+                align-items: center !important;
+                gap: 0.5rem !important;
+                overflow: hidden !important;
+                padding-bottom: 0.8rem !important;
+            }
 
-            /* 1. Perbaikan: Menggunakan .products-grid (pakai 's') agar sesuai dengan HTML */
+            .section-title {
+                font-size: 1rem !important; /* Ukuran disesuaikan agar pas di HP */
+                white-space: nowrap !important;
+                margin: 0 !important;
+            }
+
+            .category-tabs {
+                display: flex !important;
+                flex-direction: row !important;
+                overflow-x: auto !important; /* Membuat tombol bisa di-slide/geser */
+                white-space: nowrap !important;
+                gap: 0.4rem !important;
+                flex-wrap: nowrap !important;
+                -webkit-overflow-scrolling: touch;
+                max-width: 58% !important;
+            }
+
+            /* Menyembunyikan garis scrollbar agar tampilannya bersih ala aplikasi */
+            .category-tabs::-webkit-scrollbar {
+                display: none;
+            }
+
+            .tab-btn {
+                flex: 0 0 auto !important;
+                padding: 0.4rem 0.7rem !important;
+                font-size: 0.7rem !important;
+            }
+
+            /* 2. Mengatur grid katalog produk agar pas 2 kolom rapi */
             .products-grid, #product-list {
                 display: grid !important;
                 grid-template-columns: repeat(2, 1fr) !important;
                 gap: 10px !important;
-                padding: 0 8px !important;
+                padding: 0 !important;
                 width: 100% !important;
                 box-sizing: border-box !important;
             }
 
-            /* Memastikan card produk pas di dalam setengah kolom */
             .product-card {
                 width: 100% !important;
                 max-width: 100% !important;
@@ -255,7 +292,6 @@
                 box-sizing: border-box !important;
             }
 
-            /* Menyesuaikan ukuran gambar produk di dalam katalog agar proporsional */
             .product-card img, .product-img-wrap img {
                 height: 140px !important;
                 object-fit: cover !important;
@@ -264,28 +300,34 @@
             
             .nav-links-desktop { display: none; }
             
-            /* Memperkecil ukuran judul utama agar pas di layar HP */
             .landing-content h1 { font-size: 2.2rem !important; }
             .landing-content p { font-size: 0.95rem; padding: 0 1rem; }
             
-            /* Mengatur ulang padding container */
             .container { padding: 0 1rem; margin: 2rem auto; }
             
-            /* 2. Memperbaiki ukuran Cart Sidebar agar tidak full-screen dan kebesaran */
+            /* 3. Keranjang Menggantung (Floating 3/4 Layar dengan Sudut Melengkung) */
             .cart-sidebar { 
-                width: 85% !important; 
-                max-width: 350px !important;
-                right: -100%; 
-                padding: 15px !important;
+                width: 90% !important; 
+                max-width: 360px !important;
+                height: 82vh !important; 
+                top: 9vh !important;     
+                right: -100% !important; 
+                border-radius: 16px 0 0 16px !important; 
+                box-shadow: -5px 5px 30px rgba(0, 0, 0, 0.2) !important;
                 box-sizing: border-box !important;
+                transition: right 0.3s ease-in-out !important;
+            }
+
+            .cart-sidebar.active {
+                right: 0 !important;
             }
             
             .cart-sidebar h2, .cart-sidebar h3, .cart-title {
-                font-size: 1.2rem !important;
+                font-size: 1.1rem !important;
             }
 
             .cart-sidebar p, .cart-sidebar span {
-                font-size: 0.9rem !important;
+                font-size: 0.85rem !important;
             }
 
             .close-img-modal { right: 0; top: -3rem; }
