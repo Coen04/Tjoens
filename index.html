@@ -236,43 +236,45 @@
                 overflow-x: hidden !important;
                 width: 100% !important;
             }
-            /* 1. Header Katalog: Tulisan & Tombol Filter Bersebelahan & Bisa Di-slide */
+
+            /* 1. Header Katalog: Judul di Atas, Tombol Filter di Bawahnya & Bisa Di-slide */
             .section-header {
                 display: flex !important;
-                flex-direction: row !important;
-                justify-content: space-between !important;
-                align-items: center !important;
-                gap: 0.5rem !important;
-                overflow: hidden !important;
+                flex-direction: column !important; /* Ditumpuk vertikal ke bawah */
+                align-items: flex-start !important;
+                gap: 10px !important;
                 padding-bottom: 0.8rem !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
             }
 
             .section-title {
-                font-size: 1rem !important; /* Ukuran disesuaikan agar pas di HP */
-                white-space: nowrap !important;
+                font-size: 1.2rem !important; /* Ukuran normal karena sudah punya baris sendiri */
                 margin: 0 !important;
             }
 
             .category-tabs {
                 display: flex !important;
                 flex-direction: row !important;
-                overflow-x: auto !important; /* Membuat tombol bisa di-slide/geser */
+                overflow-x: auto !important; /* Tombol kategori tetap bisa digeser/slide ke samping */
                 white-space: nowrap !important;
-                gap: 0.4rem !important;
+                gap: 6px !important;
                 flex-wrap: nowrap !important;
                 -webkit-overflow-scrolling: touch;
-                max-width: 58% !important;
+                width: 100% !important;
+                padding-bottom: 4px;
             }
 
-            /* Menyembunyikan garis scrollbar agar tampilannya bersih ala aplikasi */
+            /* Menyembunyikan scrollbar agar tampilannya bersih ala aplikasi */
             .category-tabs::-webkit-scrollbar {
-                display: none;
+                display: none !important;
             }
 
             .tab-btn {
                 flex: 0 0 auto !important;
-                padding: 0.4rem 0.7rem !important;
-                font-size: 0.7rem !important;
+                padding: 0.4rem 0.9rem !important;
+                font-size: 0.75rem !important;
+                white-space: nowrap !important;
             }
 
             /* 2. Mengatur grid katalog produk agar pas 2 kolom rapi */
@@ -305,15 +307,15 @@
             
             .container { padding: 0 1rem; margin: 2rem auto; }
             
-            /* 3. Keranjang Menggantung (Floating 3/4 Layar dengan Sudut Melengkung) */
+            /* 3. Keranjang Menggantung Pas 3/4 Layar (Tinggi 75vh di tengah vertikal) */
             .cart-sidebar { 
-                width: 90% !important; 
-                max-width: 360px !important;
-                height: 82vh !important; 
-                top: 9vh !important;     
+                width: 88% !important; 
+                max-width: 340px !important;
+                height: 75vh !important; /* Tinggi pas 3/4 layar */
+                top: 12.5vh !important;  /* Menggantung di tengah secara vertikal */
                 right: -100% !important; 
                 border-radius: 16px 0 0 16px !important; 
-                box-shadow: -5px 5px 30px rgba(0, 0, 0, 0.2) !important;
+                box-shadow: -5px 10px 35px rgba(0, 0, 0, 0.25) !important;
                 box-sizing: border-box !important;
                 transition: right 0.3s ease-in-out !important;
             }
