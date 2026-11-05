@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tjoen's - Official Store</title>
+    <!-- Font Geometris Sans-Serif (Montserrat) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        /* Pastikan font Montserrat dipaksa aktif di semua elemen, termasuk di HP */
+        body, h1, h2, h3, h4, h5, h6, p, span, button, a, input, textarea {
+            font-family: 'Montserrat', sans-serif !important;
+        }
+        :root {
+            --bg-main: #ffffff;
+            --primary: #000000;
+            --secondary: #666666;
+            --border: #e0e0e0;
+            --light-gray: #f9f9f9;
+            --danger: #d32f2f;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Helvetica Neue', Arial, sans-serif; letter-spacing: 0.5px; }
+        body { background-color: var(--bg-main); color: var(--primary); line-height: 1.6; overflow-x: hidden; }
+
+        .logo-text { font-family: 'Montserrat', sans-serif; font-size: 1.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; text-decoration: none; color: var(--primary); }
+        .logo-footer { font-family: 'Montserrat', sans-serif; font-size: 3.5rem; font-weight: 700; text-transform: uppercase; letter-spacing: 4px; color: #ffffff; margin-bottom: 1rem; display: inline-block; cursor: pointer; }
+
+        /* Header */
+        header { background: #ffffff; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
+        .nav-container { max-width: 1300px; margin: 0 auto; padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .header-left { display: flex; align-items: center; gap: 1.5rem; }
+        
+        /* Tombol Garis 3 */
+        .hamburger-btn { display: flex; flex-direction: column; justify-content: space-between; width: 26px; height: 18px; background: transparent; border: none; cursor: pointer; padding: 0; z-index: 1001; }
+        .hamburger-btn span { width: 100%; height: 2px; background-color: var(--primary); transition: all 0.3s ease; }
+        .hamburger-btn.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+        .hamburger-btn.active span:nth-child(2) { opacity: 0; }
+        .hamburger-btn.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+        .nav-links-desktop { display: flex; gap: 2rem; list-style: none; }
+        .nav-links-desktop a { text-decoration: none; color: var(--secondary); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px; transition: color 0.2s; cursor: pointer; }
+        .nav-links-desktop a:hover { color: var(--primary); }
+
+        .cart-icon-btn { position: relative; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; font-weight: 700; font-size: 0.85rem; padding: 0.5rem 1rem; background: var(--primary); color: #fff; transition: background 0.2s; text-transform: uppercase; }
+        .cart-icon-btn:hover { background: var(--secondary); }
+        .cart-badge { background: #fff; color: var(--primary); padding: 0.1rem 0.4rem; border-radius: 50%; font-size: 0.75rem; font-weight: 700; }
+
+        /* Drawer Menu Kiri */
+        .menu-drawer-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 2499; display: none; }
+        .menu-drawer-overlay.active { display: block; }
+        .menu-drawer { position: fixed; top: 0; left: -320px; width: 300px; max-width: 80%; height: 100vh; background: #ffffff; z-index: 2500; transition: left 0.3s ease; padding: 2.5rem 2rem; display: flex; flex-direction: column; box-shadow: 5px 0 25px rgba(0,0,0,0.1); }
+        .menu-drawer.active { left: 0; }
+        .menu-drawer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
+        .menu-drawer-links { list-style: none; display: flex; flex-direction: column; gap: 1.5rem; }
+        .menu-drawer-links a { text-decoration: none; color: var(--primary); font-weight: 700; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 1.5px; cursor: pointer; transition: color 0.2s; }
+        .menu-drawer-links a:hover { color: var(--secondary); }
+
+        /* Efek Kedip/Fade */
+        .page-content { display: none; opacity: 0; transition: opacity 0.2s ease-in-out; }
+        .page-content.active { display: block; opacity: 1; }
+
+        /* Beranda Awal */
+        .landing-hero { height: calc(100vh - 74px); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 2rem; background: var(--light-gray); position: relative; }
+        .landing-hero img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.85; z-index: 1; }
+        .landing-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); z-index: 2; }
+        .landing-content { position: relative; z-index: 3; color: #ffffff; max-width: 700px; }
+        .landing-content h1 { font-family: 'Montserrat', sans-serif; font-size: 4rem; font-weight: 900; letter-spacing: 3px; margin-bottom: 1rem; text-transform: uppercase; }
+        .landing-content p { font-size: 1.1rem; margin-bottom: 2rem; font-weight: 400; letter-spacing: 1px; }
+        .shop-now-btn { display: inline-block; padding: 1rem 2.5rem; background: #ffffff; color: #000000; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; transition: 0.2s; cursor: pointer; border: none; }
+        .shop-now-btn:hover { background: var(--primary); color: #ffffff; }
+
+        /* Container & Katalog */
+        .container { max-width: 1300px; margin: 4rem auto; padding: 0 2rem; }
+        .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
+        .section-title { font-family: 'Montserrat', sans-serif; font-size: 1.5rem; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; }
+
+        .category-tabs { display: flex; gap: 1rem; }
+        .tab-btn { background: none; border: 1px solid var(--primary); padding: 0.5rem 1.5rem; cursor: pointer; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; transition: 0.2s; }
+        .tab-btn.active, .tab-btn:hover { background: var(--primary); color: white; }
+
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2.5rem; }
+        .product-card { background: #ffffff; border: 1px solid var(--border); overflow: hidden; display: flex; flex-direction: column; transition: box-shadow 0.3s; position: relative; cursor: pointer; }
+        .product-card:hover { box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .product-card img { width: 100%; height: 340px; object-fit: cover; background: var(--light-gray); }
+        
+        .cat-tag { position: absolute; top: 1rem; right: 1rem; padding: 0.3rem 0.8rem; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; pointer-events: none; }
+        .cat-tag.pria { background: #000000; color: #ffffff; }
+        .cat-tag.wanita { background: #ffffff; color: #000000; border: 1px solid #000; }
+
+        .product-info { padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column; }
+        .product-info h3 { font-family: 'Montserrat', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; text-transform: uppercase; }
+        .product-info p { color: var(--secondary); font-size: 0.85rem; flex-grow: 1; margin-bottom: 1rem; display: -webkit-box; -webkit-line-clamp: 2;line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .stok-info { font-size: 0.8rem; font-weight: 700; margin-bottom: 0.5rem; text-transform: uppercase; }
+        .price { font-weight: 700; font-size: 1.05rem; color: var(--primary); margin-bottom: 1rem; }
+        
+        .btn-add { background: var(--primary); color: white; border: none; padding: 1rem; cursor: pointer; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; width: 100%; transition: background 0.2s; }
+        .btn-add:hover:not(:disabled) { background: var(--secondary); }
+        .btn-add:disabled { background: var(--border); color: var(--secondary); cursor: not-allowed; }
+
+        /* Styling Tombol Beli Panjang & Ikon Keranjang ala Shopee */
+        .product-actions { 
+            display: flex; 
+            gap: 6px; 
+            padding: 0 1.5rem 1.5rem 1.5rem; 
+            margin-top: auto;
+        }
+        .btn-buy { 
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            padding: 0.9rem 0.5rem; 
+            cursor: pointer; 
+            font-weight: 700; 
+            font-size: 0.7rem; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            flex: 1; /* Baris panjang */
+            transition: background 0.2s; 
+        }
+        .btn-buy:hover:not(:disabled) { background: var(--secondary); }
+        .btn-buy:disabled { background: var(--border); color: var(--secondary); cursor: not-allowed; }
+
+        /* Tombol Ikon Keranjang Kecil Berwarna Hitam Menyesuaikan Tombol Beli */
+        .btn-cart-sm {
+            background: var(--primary); /* Latar belakang hitam */
+            color: #ffffff; /* Ikon/teks putih */
+            border: 1px solid var(--primary);
+            padding: 0.9rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 45px; /* Ukuran kotak kecil pas */
+            transition: all 0.2s;
+        }
+        .btn-cart-sm:hover:not(:disabled) {
+            background: var(--secondary); /* Berubah abu-abu gelap saat disorot */
+            border-color: var(--secondary);
+        }
+        .btn-cart-sm:disabled {
+            background: var(--border);
+            border-color: var(--border);
+            color: var(--secondary);
+            cursor: not-allowed;
+        }
+
+        /* Modal Image Khusus (Lightbox) */
+        .image-modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 600px; background: transparent; z-index: 3001; display: none; text-align: center; }
+        .image-modal.active { display: block; }
+        .image-modal img { width: 100%; max-height: 85vh; object-fit: contain; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+        .close-img-modal { position: absolute; top: -2rem; right: -2rem; background: none; border: none; font-size: 2.5rem; cursor: pointer; color: #ffffff; text-shadow: 0 0 10px rgba(0,0,0,0.5); }
+
+        /* Modal Detail Produk */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 2999; display: none; }
+        .modal-overlay.active { display: block; }
+        .product-modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 500px; background: #ffffff; z-index: 3000; padding: 2.5rem; display: none; }
+        .product-modal.active { display: block; }
+        .close-modal { position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--primary); }
+
+        /* Keranjang */
+        .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 1999; display: none; }
+        .cart-overlay.active { display: block; }
+        .cart-sidebar { position: fixed; top: 0; right: -450px; width: 400px; max-width: 100%; height: 100vh; background: #ffffff; z-index: 2000; box-shadow: -5px 0 25px rgba(0,0,0,0.1); transition: right 0.3s ease; display: flex; flex-direction: column; }
+        .cart-sidebar.active { right: 0; }
+        
+        .cart-header { padding: 1.5rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .cart-header h2 { font-family: 'Montserrat', sans-serif; font-size: 1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
+        .close-cart { background: none; border: none; font-size: 1.2rem; cursor: pointer; }
+        
+        .cart-items-container { padding: 1.5rem; flex-grow: 1; overflow-y: auto; }
+        .cart-item { display: flex; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+        .cart-item img { width: 70px; height: 70px; object-fit: cover; }
+        .cart-item-details { flex-grow: 1; }
+        .cart-item-details h4 { font-size: 0.9rem; margin-bottom: 0.3rem; font-weight: 700; text-transform: uppercase; }
+        .cart-item-price { color: var(--primary); font-weight: 700; font-size: 0.9rem; margin-bottom: 0.5rem; }
+        
+        .qty-controls { display: flex; align-items: center; gap: 0.5rem; border: 1px solid var(--border); width: fit-content; }
+        .qty-btn { background: var(--light-gray); border: none; padding: 0.2rem 0.6rem; cursor: pointer; font-weight: bold; }
+        .qty-value { font-size: 0.85rem; font-weight: bold; min-width: 20px; text-align: center; }
+
+        .cart-footer { padding: 1.5rem; border-top: 1px solid var(--border); background: var(--light-gray); }
+        .cart-total { display: flex; justify-content: space-between; font-weight: 800; font-size: 1.1rem; margin-bottom: 1rem; text-transform: uppercase; }
+        .checkout-btn { background: #000000; color: white; border: none; padding: 1rem; width: 100%; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: 0.2s; }
+        .checkout-btn:hover { background: var(--secondary); }
+
+        /* Halaman Teks & Form */
+        .policy-container, .contact-container { max-width: 800px; margin: 0 auto; }
+        .policy-item, .contact-item { padding: 1.5rem 0; border-bottom: 1px solid var(--border); }
+        .policy-item h3 { font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 800; text-transform: uppercase; margin-bottom: 1rem; letter-spacing: 1px; }
+        .policy-item p { font-size: 0.95rem; color: var(--secondary); line-height: 1.8; text-align: justify; }
+        
+        .contact-item { display: flex; justify-content: space-between; align-items: center; }
+        .contact-item span.label { font-weight: 700; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem; }
+        .contact-item span.value a, .contact-item span.value { color: var(--secondary); font-size: 0.95rem; text-decoration: none; }
+        .contact-item a:hover { color: var(--primary); text-decoration: underline; }
+
+        .reviews-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 3rem; }
+        .review-card { background: #ffffff; border: 1px solid var(--border); padding: 1.5rem; }
+        .review-card .stars { color: #000000; margin-bottom: 0.5rem; font-size: 0.8rem; }
+        .review-card p { font-size: 0.88rem; font-style: italic; color: var(--secondary); margin-bottom: 1rem; }
+        .review-card span { font-weight: 700; font-size: 0.8rem; text-transform: uppercase; }
+
+        .review-form-box { background: #ffffff; border: 1px solid var(--border); padding: 3rem; max-width: 600px; margin: 0 auto; }
+        .review-form-box h3 { font-family: 'Montserrat', sans-serif; font-size: 1.1rem; font-weight: 800; text-transform: uppercase; margin-bottom: 1.5rem; text-align: center; }
+        .form-group { margin-bottom: 1.2rem; }
+        .form-group label { display: block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 0.4rem; color: var(--secondary); }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 0.8rem; border: 1px solid var(--border); font-size: 0.9rem; background: var(--light-gray); }
+        .form-group textarea { resize: vertical; height: 90px; }
+
+        /* Footer */
+        footer { background: #000000; color: #ffffff; padding: 5rem 2rem 2rem; margin-top: 6rem; }
+        .footer-container { max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 3rem; margin-bottom: 4rem; }
+        .footer-col h4 { font-family: 'Montserrat', sans-serif; color: #fff; font-size: 0.85rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1.5rem; }
+        .footer-col p, .footer-col a { font-size: 0.85rem; color: #a0a0a0; text-decoration: none; display: block; margin-bottom: 0.8rem; transition: color 0.2s; cursor: pointer; }
+        .footer-col a:hover { color: #ffffff; }
+        .copyright-bar { text-align: center; border-top: 1px solid #222; padding-top: 2rem; font-size: 0.75rem; color: #777; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; text-transform: uppercase; letter-spacing: 1px; }
+
+                /* Banner Cookie Consent Putih Transparan (Glassmorphism) */
+        .cookie-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.88); /* Transparan Putih */
+            backdrop-filter: blur(12px); /* Efek Buram Blur Kaca */
+            -webkit-backdrop-filter: blur(12px);
+            color: #000000;
+            padding: 1.2rem 2rem;
+            font-size: 0.85rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 4000;
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .cookie-text {
+            color: #333333;
+            line-height: 1.5;
+        }
+
+        .cookie-text a {
+            color: #000000;
+            text-decoration: underline;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .cookie-text a:hover {
+            color: #666666;
+        }
+
+        .cookie-btn {
+            background: #000000;
+            color: #ffffff;
+            border: 1px solid #000000;
+            padding: 0.7rem 1.8rem;
+            font-weight: 700;
+            font-size: 0.75rem;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            white-space: nowrap;
+            margin-left: 1.5rem;
+            border-radius: 30px; /* Membuat bentuk tombol menjadi oval/kapsul */
+            transition: all 0.3s ease;
+            animation: pulseBtn 2s infinite; /* Animasi bergerak/berdenyut lembut */
+        }
+
+        .cookie-btn:hover {
+            background: #333333;
+            border-color: #333333;
+            transform: translateY(-2px) scale(1.05); /* Sedikit terangkat saat kursor menempel */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        @media(max-width: 768px) {
+            /* Mencegah layar bergeser ke samping */
+            body, html {
+                overflow-x: hidden !important;
+                width: 100% !important;
+            }
+
+            /* 1. Header Katalog: Judul di Atas, Tombol Filter di Bawahnya & Bisa Di-slide */
+            .section-header {
+                display: flex !important;
+                flex-direction: column !important; /* Ditumpuk vertikal ke bawah */
+                align-items: flex-start !important;
+                gap: 10px !important;
+                padding-bottom: 0.8rem !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+            }
+
+            .section-title {
+                font-size: 1.2rem !important; /* Ukuran normal karena sudah punya baris sendiri */
+                margin: 0 !important;
+            }
+
+            .category-tabs {
+                display: flex !important;
+                flex-direction: row !important;
+                overflow-x: auto !important; /* Tombol kategori tetap bisa digeser/slide ke samping */
+                white-space: nowrap !important;
+                gap: 6px !important;
+                flex-wrap: nowrap !important;
+                -webkit-overflow-scrolling: touch;
+                width: 100% !important;
+                padding-bottom: 4px;
+            }
+
+            /* Menyembunyikan scrollbar agar tampilannya bersih ala aplikasi */
+            .category-tabs::-webkit-scrollbar {
+                display: none !important;
+            }
+
+            .tab-btn {
+                flex: 0 0 auto !important;
+                padding: 0.4rem 0.9rem !important;
+                font-size: 0.75rem !important;
+                white-space: nowrap !important;
+            }
+
+            /* 2. Mengatur grid katalog produk agar pas 2 kolom rapi */
+            .products-grid, #product-list {
+                display: grid !important;
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 10px !important;
+                padding: 0 !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+            }
+
+            .product-card {
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 0 !important;
+                box-sizing: border-box !important;
+            }
+
+            .product-card img, .product-img-wrap img {
+                height: 140px !important;
+                object-fit: cover !important;
+                width: 100% !important;
+            }
+            
+            .nav-links-desktop { display: none; }
+            
+            .landing-content h1 { font-size: 2.2rem !important; }
+            .landing-content p { font-size: 0.95rem; padding: 0 1rem; }
+            
+            .container { padding: 0 1rem; margin: 2rem auto; }
+            
+            /* 3. Keranjang Menggantung Pas 3/4 Layar (Tinggi 75vh di tengah vertikal) */
+            .cart-sidebar { 
+                width: 88% !important; 
+                max-width: 340px !important;
+                height: 75vh !important; /* Tinggi pas 3/4 layar */
+                top: 12.5vh !important;  /* Menggantung di tengah secara vertikal */
+                right: -100% !important; 
+                border-radius: 16px 0 0 16px !important; 
+                box-shadow: -5px 10px 35px rgba(0, 0, 0, 0.25) !important;
+                box-sizing: border-box !important;
+                transition: right 0.3s ease-in-out !important;
+            }
+
+            .cart-sidebar.active {
+                right: 0 !important;
+            }
+            
+            .cart-sidebar h2, .cart-sidebar h3, .cart-title {
+                font-size: 1.1rem !important;
+            }
+
+            .cart-sidebar p, .cart-sidebar span {
+                font-size: 0.85rem !important;
+            }
+
+            .close-img-modal { right: 0; top: -3rem; }
+        }
+
+        @keyframes pulseBtn {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2);
+            }
+            50% {
+                transform: scale(1.04); /* Membesar perlahan */
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <div class="header-left">
+                <button class="hamburger-btn" id="hamburger-btn" onclick="toggleMenuDrawer()" aria-label="Menu">
+                    <span></span><span></span><span></span>
+                </button>
+                <div onclick="switchPage('landing')" style="cursor: pointer; display: flex; align-items: center;">
+                    <img src="logo-tjoens.png" alt="Tjoen's" style="height: 30px; object-fit: contain;" onerror="this.style.display='none'; document.getElementById('logo-text').style.display='inline';">
+                    <span id="logo-text" style="display: none; font-family: 'Montserrat', sans-serif; font-size: 1.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 3px;">Tjoen's</span>
+                </div>
+            </div>
+            <ul class="nav-links-desktop">
+                <li><a onclick="switchPage('landing')">Home</a></li>
+                <li><a onclick="switchPage('katalog')">Katalog</a></li>
+                <li><a onclick="switchPage('tentang')">About Us</a></li>
+                <li><a onclick="switchPage('contact')">Contact</a></li>
+                <li><a onclick="switchPage('kebijakan')">Kebijakan</a></li>
+            </ul>
+            <div class="cart-icon-btn" onclick="toggleCart()">
+                🛒 <span class="cart-badge" id="cart-count">0</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="menu-drawer-overlay" id="menu-drawer-overlay" onclick="toggleMenuDrawer()"></div>
+    <div class="menu-drawer" id="menu-drawer">
+        <div class="menu-drawer-header">
+            <h3 style="font-family: 'Montserrat', sans-serif; font-weight: 800; text-transform: uppercase; font-size:0.9rem; letter-spacing:2px;">Menu</h3>
+            <button class="close-cart" onclick="toggleMenuDrawer()">&times;</button>
+        </div>
+        <ul class="menu-drawer-links">
+            <li><a onclick="switchPage('landing')">Home</a></li>
+            <li><a onclick="switchPage('katalog')">Katalog Produk</a></li>
+            <li><a onclick="switchPage('tentang')">About Us</a></li>
+            <li><a onclick="switchPage('contact')">Contact</a></li>
+            <li><a onclick="switchPage('kebijakan')">Kebijakan Toko</a></li>
+            <li><a onclick="switchPage('ulasan')">Ulasan Pembeli</a></li>
+        </ul>
+    </div>
+
+    <!-- Modal Lightbox (Hanya Gambar) -->
+    <div class="modal-overlay" id="image-modal-overlay" onclick="closeImageModal()"></div>
+    <div class="image-modal" id="image-modal">
+        <button class="close-img-modal" onclick="closeImageModal()">&times;</button>
+        <img id="enlarged-image" src="" alt="Perbesar Gambar">
+    </div>
+
+    <!-- Modal Detail Produk -->
+    <div class="modal-overlay" id="product-modal-overlay" onclick="closeProductModal()"></div>
+    <div class="product-modal" id="product-modal">
+        <button class="close-modal" onclick="closeProductModal()">&times;</button>
+        <div id="modal-body"></div>
+    </div>
+
+    <div class="cart-overlay" id="cart-overlay" onclick="toggleCart()"></div>
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h2>Shopping Cart</h2>
+            <button class="close-cart" onclick="toggleCart()">&times;</button>
+        </div>
+        <div class="cart-items-container" id="cart-items">
+            <p style="color: var(--secondary); text-align: center; margin-top: 2rem; font-size:0.9rem;">Keranjang masih kosong.</p>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span>Rp <span id="cart-total">0</span></span>
+            </div>
+            <button class="checkout-btn" onclick="checkoutWhatsApp()">CHECKOUT NOW</button>
+        </div>
+    </div>
+
+    <!-- Halaman 0: Beranda -->
+    <main class="page-content active" id="page-landing">
+        <div class="landing-hero">
+            <img src="foto-barang-utama.jpg" alt="Hero Image" onerror="this.style.display='none';">
+            <div class="landing-overlay"></div>
+            <div class="landing-content">
+                <h1>Tjoen's</h1>
+                <p>Menggunakan bahan premium yang nyaman, lembut di kulit, adem, dan dirancang khusus untuk menunjang aktivitas esensial harian anda.</p>
+                <button class="shop-now-btn" onclick="switchPage('katalog')">Jelajahi Koleksi</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Halaman 1: Katalog -->
+    <main class="page-content" id="page-katalog">
+        <div class="container" style="margin-top: 2rem;">
+            <div class="section-header">
+                <h2 class="section-title">Katalog Koleksi</h2>
+                <div class="category-tabs">
+                    <button class="tab-btn active" onclick="filterCategory('all')">Semua</button>
+                    <button class="tab-btn" onclick="filterCategory('Pria')">Pria</button>
+                    <button class="tab-btn" onclick="filterCategory('Wanita')">Wanita</button>
+                </div>
+            </div>
+            <div class="products-grid" id="product-list">
+                <p style="color: var(--secondary);">Memuat katalog produk dari database...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Halaman 2: About Us -->
+    <main class="page-content" id="page-tentang">
+        <div class="container policy-container" style="margin-top: 3rem;">
+            <div class="section-header">
+                <h2 class="section-title">About Us</h2>
+            </div>
+            <div class="policy-item" style="border:none;">
+                <h3>Brand Filosofi</h3>
+                <p>Tjoen's menghadirkan standar baru pakaian dalam esensial dengan pendekatan kenyamanan untuk semua. Kami fokus pada kualitas jahitan presisi, sirkulasi udara optimal, dan material premium terbaik yang nyaman dipakai sepanjang hari tanpa kompromi.</p>
+                <br>
+                <h3>Legalitas & Kepercayaan</h3>
+                <p>Operasional bisnis kami dilindungi dan terdaftar secara resmi dengan kepemilikan <strong>Nomor Induk Berusaha (NIB): 912000521xxxx</strong>, menjamin keamanan transaksi dan kredibilitas brand di mata pelanggan.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Halaman 3: Contact -->
+    <main class="page-content" id="page-contact">
+        <div class="container contact-container" style="margin-top: 3rem;">
+            <div class="section-header">
+                <h2 class="section-title">Hubungi Kami</h2>
+            </div>
+            <div style="margin-top: 1rem;">
+                <div class="contact-item">
+                    <span class="label">WhatsApp</span>
+                    <span class="value"><a href="https://wa.me/628812434685" target="_blank">+62 881-2434-685</a></span>
+                </div>
+                <div class="contact-item">
+                    <span class="label">Instagram</span>
+                    <span class="value"><a href="https://instagram.com" target="_blank">@tjoens.official</a></span>
+                </div>
+                <div class="contact-item">
+                    <span class="label">TikTok</span>
+                    <span class="value"><a href="https://tiktok.com" target="_blank">@tjoens.wear</a></span>
+                </div>
+                <div class="contact-item">
+                    <span class="label">Email Layanan</span>
+                    <span class="value">support@tjoens.my.id</span>
+                </div>
+                <div class="contact-item">
+                    <span class="label">Alamat Operasional</span>
+                    <span class="value">Jl. Brawijaya III, Ungaran, Jawa Tengah</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Halaman 4: Kebijakan Toko -->
+    <main class="page-content" id="page-kebijakan">
+        <div class="container policy-container" style="margin-top: 3rem;">
+            <div class="section-header">
+                <h2 class="section-title">Kebijakan & Ketentuan</h2>
+            </div>
+            <div style="margin-top: 1rem;">
+                <div class="policy-item">
+                    <h3>Ketentuan Pengiriman</h3>
+                    <p>Setiap pesanan akan diproses dan dikirim dalam waktu 1x24 jam di hari kerja. Pengiriman dikemas secara eksklusif dan tertutup rapat menggunakan bungkus yang rahasia (tanpa menyebut isi barang di luar paket) demi menjaga privasi dan kenyamanan penuh pelanggan kami.</p>
+                </div>
+                <div class="policy-item">
+                    <h3>Ketentuan Pembayaran</h3>
+                    <p>Pembayaran dijamin keamanannya dan diproses melalui Transfer Bank resmi, QRIS, serta layanan E-Wallet terverifikasi. Seluruh instruksi dan konfirmasi pembayaran akan dikoordinasikan secara langsung dan personal melalui admin WhatsApp kami agar lebih aman.</p>
+                </div>
+                <div class="policy-item">
+                    <h3>Return dan Pertukaran</h3>
+                    <p>Garansi penukaran ukuran (retur) berlaku maksimal 3 hari kerja setelah barang diterima oleh pelanggan, dengan syarat mutlak: kondisi produk masih sangat higienis, belum pernah dicuci, dan seluruh label/tag masih menempel utuh.</p>
+                </div>
+                <div class="policy-item">
+                    <h3>Kebijakan Privasi</h3>
+                    <p>Seluruh data pribadi, nomor kontak, dan riwayat transaksi pelanggan di dalam sistem kami dilindungi kerahasiaannya dengan sangat ketat dan tidak akan pernah dibagikan, dijual, atau disalahgunakan kepada pihak ketiga mana pun tanpa persetujuan.</p>
+                </div>
+                <div class="policy-item">
+                    <h3>Syarat dan Ketentuan</h3>
+                    <p>Dengan melakukan akses, penjelajahan, maupun transaksi pembelian di situs web Tjoen's, pelanggan dianggap telah membaca, memahami, dan menyetujui seluruh ketentuan layanan operasional toko yang berlaku tanpa terkecuali.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Halaman 5: Ulasan -->
+    <main class="page-content" id="page-ulasan">
+        <div class="container" style="margin-top: 3rem;">
+            <div class="section-header">
+                <h2 class="section-title">Ulasan Pembeli</h2>
+            </div>
+            
+            <div class="reviews-grid" id="review-list">
+                <p style="color: var(--secondary);">Memuat ulasan dari database...</p>
+            </div>
+
+            <div class="review-form-box">
+                <h3>Tulis Ulasan Anda</h3>
+                <form id="review-form" onsubmit="submitReview(event)">
+                    <div class="form-group">
+                        <label>Nama Lengkap</label>
+                        <input type="text" id="rev-name" required placeholder="Cth: Budi Santoso">
+                    </div>
+                    <div class="form-group">
+                        <label>Kota Asal</label>
+                        <input type="text" id="rev-city" required placeholder="Cth: Semarang">
+                    </div>
+                    <div class="form-group">
+                        <label>Rating Kepuasan</label>
+                        <select id="rev-rating">
+                            <option value="5">⭐⭐⭐⭐⭐ (Sangat Puas)</option>
+                            <option value="4">⭐⭐⭐⭐ (Puas)</option>
+                            <option value="3">⭐⭐⭐ (Cukup)</option>
+                            <option value="3">⭐⭐ (Kurang)</option>
+                            <option value="3">⭐ (Sangat Kurang)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Ulasan Pengalaman</label>
+                        <textarea id="rev-comment" required placeholder="Ceritakan pengalaman menggunakan bahan premium Tjoen's..."></textarea>
+                    </div>
+                    <button type="submit" class="btn-add" id="submit-btn" style="padding:1rem;">Kirim Ulasan</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <!-- Banner Cookie Consent & Persetujuan Kebijakan -->
+        <div class="cookie-bar" id="cookie-bar">
+            <div class="cookie-text">
+        Website ini menggunakan cookies untuk memberikan Anda pengalaman belanja terbaik. Info selengkapnya dapat Anda lihat di <a onclick="switchPage('kebijakan')">Kebijakan Privasi</a> dan <a onclick="switchPage('kebijakan')">Syarat & Ketentuan</a>. Klik "Setuju" untuk melanjutkan.
+            </div>
+            <button class="cookie-btn" onclick="acceptCookies()">SETUJU</button>
+        </div>
+        <div class="footer-container">
+            <div class="footer-col">
+                <!-- Logo Pintar di Footer: Otomatis Gambar atau Teks -->
+                <div onclick="switchPage('landing')" style="cursor: pointer; display: inline-block;">
+                    <img src="logo-tjoens.png" alt="Tjoen's" style="height: 50px; object-fit: contain; margin-bottom: 1rem;" onerror="this.style.display='none'; document.getElementById('logo-footer-text').style.display='inline-block';">
+                    <span id="logo-footer-text" class="logo-footer" style="display: none;">TJOEN'S</span>
+                </div>
+                
+                <p>Essential Innerwear crafted with premium comfort and timeless minimalist character.</p>
+            </div>
+            <div class="footer-col">
+                <h4>About</h4>
+                <a onclick="switchPage('landing')">Home</a>
+                <a onclick="switchPage('tentang')">About Us</a>
+                <a onclick="switchPage('contact')">Contact</a>
+                <a onclick="switchPage('kebijakan')">Kebijakan</a>
+            </div>
+            <div class="footer-col">
+                <h4>Policy</h4>
+                <a onclick="switchPage('kebijakan')">Ketentuan pengiriman</a>
+                <a onclick="switchPage('kebijakan')">Ketentuan pembayaran</a>
+                <a onclick="switchPage('kebijakan')">Return dan pertukaran</a>
+                <a onclick="switchPage('kebijakan')">Kebijakan privasi</a>
+                <a onclick="switchPage('kebijakan')">Syarat dan ketentuan</a>
+            </div>
+        </div>
+        <div class="copyright-bar">
+            <span>&copy; 2026 Tjoen's Official. All rights reserved.</span>
+            <span>Monochrome Minimalist Collection</span>
+        </div>
+    </footer>
+
+    <!-- Script Utama -->
+    <script>
+        // --- MASUKKAN LINK API SHEET.BEST KAMU DI SINI ---
+        const PRODUCT_API = 'https://api.sheetbest.com/sheets/41a7533c-bfbb-47b4-8376-c5643238c44b';
+        const REVIEW_API = 'https://api.sheetbest.com/sheets/f9d25989-8f36-4339-a95b-127613543af6';
+        const WHATSAPP_NUMBER = '628812434685'; // 👈 Ganti dengan nomor WhatsApp-mu (awali 62)
+
+        let products = [];
+        let cart = [];
+        let activeCategory = 'all';
+
+        // Efek Pindah Halaman Kedip Halus
+        function switchPage(pageId) {
+            const pages = document.querySelectorAll('.page-content');
+            pages.forEach(p => p.style.opacity = '0');
+            setTimeout(() => {
+                pages.forEach(p => p.classList.remove('active'));
+                const targetPage = document.getElementById('page-' + pageId);
+                if (targetPage) {
+                    targetPage.classList.add('active');
+                    setTimeout(() => targetPage.style.opacity = '1', 50);
+                }
+                window.scrollTo({ top: 0, behavior: 'instant' });
+            }, 200);
+            closeMenuDrawer();
+        }
+
+        function toggleMenuDrawer() {
+            document.getElementById('menu-drawer').classList.toggle('active');
+            document.getElementById('menu-drawer-overlay').classList.toggle('active');
+            document.getElementById('hamburger-btn').classList.toggle('active');
+        }
+        function closeMenuDrawer() {
+            document.getElementById('menu-drawer').classList.remove('active');
+            document.getElementById('menu-drawer-overlay').classList.remove('active');
+            document.getElementById('hamburger-btn').classList.remove('active');
+        }
+        function toggleCart() {
+            document.getElementById('cart-sidebar').classList.toggle('active');
+            document.getElementById('cart-overlay').classList.toggle('active');
+        }
+
+        // Ambil Data Produk (Include Kolom Stok)
+        async function fetchProducts() {
+            try {
+                const response = await fetch(PRODUCT_API);
+                const data = await response.json();
+                products = [];
+
+                data.forEach(row => {
+                    if (row.name_cowo && row.name_cowo.trim() !== '') {
+                        products.push({ id: Number(row.id_cowo), name: row.name_cowo, price: Number(row.price_cowo), category: 'Pria', desc: row.desc_cowo, image: row.image_cowo, stok: Number(row.stok_cowo) || 0 });
+                    }
+                    if (row.name_cewe && row.name_cewe.trim() !== '') {
+                        products.push({ id: Number(row.id_cewe), name: row.name_cewe, price: Number(row.price_cewe), category: 'Wanita', desc: row.desc_cewe, image: row.image_cewe, stok: Number(row.stok_cewe) || 0 });
+                    }
+                });
+                renderProducts();
+            } catch (error) {
+                console.error("Gagal memuat produk:", error);
+                document.getElementById('product-list').innerHTML = '<p style="color: #666;">Gagal memuat produk dari database.</p>';
+            }
+        }
+
+        function filterCategory(cat) {
+            activeCategory = cat;
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderProducts();
+        }
+
+        function renderProducts() {
+            const list = document.getElementById('product-list');
+            const filtered = activeCategory === 'all' ? products : products.filter(p => p.category === activeCategory);
+
+            if (filtered.length === 0) {
+                list.innerHTML = '<p>Tidak ada produk pada kategori ini.</p>';
+                return;
+            }
+
+            list.innerHTML = filtered.map(p => {
+                const isOut = p.stok <= 0;
+                return `
+                <div class="product-card" onclick="openProductDetail(${p.id})">
+                    <span class="cat-tag ${p.category.toLowerCase()}">${p.category}</span>
+                    <img src="${p.image}" alt="${p.name}">
+                    <div class="product-info">
+                        <h3>${p.name}</h3>
+                        <p class="stok-info" style="color: ${isOut ? 'var(--danger)' : 'green'};">${isOut ? 'Stok Habis' : 'Stok Tersedia'}</p>
+                        <div class="price">Rp ${p.price.toLocaleString()}</div>
+                    </div>
+                    <div class="product-actions" onclick="event.stopPropagation()">
+                        <button class="btn-buy" ${isOut ? 'disabled' : ''} onclick="buyNow(${p.id})">
+                            ${isOut ? 'Habis' : 'Beli'}
+                        </button>
+                        <button class="btn-cart-sm" ${isOut ? 'disabled' : ''} onclick="addToCart(${p.id})" title="Tambah ke Keranjang">
+                            🛒
+                        </button>
+                    </div>
+                </div>
+                `;
+            }).join('');
+        }
+
+        // Buka Image Lightbox
+        function openImageModal(imgSrc) {
+            document.getElementById('enlarged-image').src = imgSrc;
+            document.getElementById('image-modal').classList.add('active');
+            document.getElementById('image-modal-overlay').classList.add('active');
+        }
+        function closeImageModal() {
+            document.getElementById('image-modal').classList.remove('active');
+            document.getElementById('image-modal-overlay').classList.remove('active');
+        }
+
+        // Buka Detail Produk Pop-up (Sudah dengan Tombol Beli & Keranjang Berdampingan)
+        function openProductDetail(id) {
+            const product = products.find(p => p.id === id);
+            if (!product) return;
+
+            const isOut = product.stok <= 0;
+            const modalBody = document.getElementById('modal-body');
+            
+            // Klik gambar di dalam Pop-up ini baru memicu Lightbox
+            modalBody.innerHTML = `
+                <img src="${product.image}" alt="${product.name}" onclick="openImageModal('${product.image}')" style="width:100%; height:280px; object-fit:cover; margin-bottom:1.5rem; cursor:zoom-in;" title="Klik untuk perbesar">
+                <span class="cat-tag ${product.category.toLowerCase()}" style="position:static; display:inline-block; margin-bottom:1rem;">${product.category}</span>
+                <h2 style="font-family:'Montserrat', sans-serif; font-size:1.2rem; font-weight:800; margin-bottom:0.4rem; text-transform:uppercase;">${product.name}</h2>
+                <p class="stok-info" style="color: ${isOut ? 'var(--danger)' : 'green'}; margin-bottom:0.5rem;">Sisa Stok: ${product.stok}</p>
+                <div class="price" style="font-size:1.2rem; margin-bottom:1rem;">Rp ${product.price.toLocaleString()}</div>
+                <p style="color:var(--secondary); font-size:0.88rem; margin-bottom:1.5rem; line-height:1.6;">${product.desc}</p>
+                
+                <!-- 👇 BAGIAN INI YANG DIUBAH MENJADI 2 TOMBOL BERDAMPINGAN -->
+                <div style="display: flex; gap: 8px; margin-top: 1.5rem;">
+                    <button class="btn-buy" style="padding: 1rem; font-size: 0.75rem; flex: 1;" ${isOut ? 'disabled' : ''} onclick="buyNow(${product.id}); closeProductModal();">
+                        ${isOut ? 'Habis' : 'Beli Sekarang'}
+                    </button>
+                    <button class="btn-cart-sm" style="padding: 1rem; flex: 0 0 55px;" ${isOut ? 'disabled' : ''} onclick="addToCart(${product.id}); closeProductModal();" title="Tambah ke Keranjang">
+                        🛒
+                    </button>
+                </div>
+            `;
+
+            document.getElementById('product-modal').classList.add('active');
+            document.getElementById('product-modal-overlay').classList.add('active');
+        }
+
+        // Ambil Data Ulasan
+        async function fetchReviews() {
+            try {
+                const response = await fetch(REVIEW_API);
+                const data = await response.json();
+                const reviewList = document.getElementById('review-list');
+                
+                if (!data || data.length === 0) {
+                    reviewList.innerHTML = '<p>Belum ada ulasan.</p>';
+                    return;
+                }
+                reviewList.innerHTML = data.map(r => `
+                    <div class="review-card">
+                        <div class="stars">${'⭐'.repeat(Number(r.rating) || 5)}</div>
+                        <p>"${r.comment}"</p>
+                        <span>- ${r.name} (${r.city})</span>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error("Gagal memuat ulasan:", error);
+                document.getElementById('review-list').innerHTML = '<p style="color: var(--secondary);">Ulasan belum tersedia.</p>';
+            }
+        }
+
+        // Kirim Ulasan
+        async function submitReview(event) {
+            event.preventDefault();
+            const btn = document.getElementById('submit-btn');
+            btn.innerText = "MENGIRIM..."; btn.disabled = true;
+
+            const newReview = { name: document.getElementById('rev-name').value, city: document.getElementById('rev-city').value, rating: document.getElementById('rev-rating').value, comment: document.getElementById('rev-comment').value };
+
+            try {
+                const response = await fetch(REVIEW_API, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(newReview)
+                });
+                if (response.ok) {
+                    alert('Terima kasih! Ulasan Anda berhasil terkirim.');
+                    document.getElementById('review-form').reset();
+                    fetchReviews();
+                } else { alert('Gagal mengirim ulasan.'); }
+            } catch (error) { alert('Terjadi kesalahan koneksi.'); } finally { btn.innerText = "Kirim Ulasan"; btn.disabled = false; }
+        }
+
+        // Fungsi Beli Langsung (1 Produk)
+        function buyNow(id) {
+            const product = products.find(p => p.id === id);
+            if (!product || product.stok <= 0) return;
+            
+            let message = "Halo Kak CS Tjoen's, saya mau pesan produk berikut:%0A%0A";
+            message += `▪️ ${product.name} (${product.category})%0A   Jumlah: 1 x Rp ${product.price.toLocaleString()}%0A`;
+            message += `%0A*TOTAL PEMBAYARAN: Rp ${product.price.toLocaleString()}*%0AMohon info rekening dan format alamat pengirimannya ya kak. Terima kasih!`;
+            
+            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`, '_blank');
+        }
+
+        // Keranjang Belanja dengan Logika Stok
+        function addToCart(id) {
+            const product = products.find(p => p.id === id);
+            const existing = cart.find(item => item.id === id);
+            
+            if (existing) { 
+                if (existing.qty >= product.stok) {
+                    alert('Maaf, pesanan melebihi stok yang tersedia.');
+                    return;
+                }
+                existing.qty++; 
+            } else { 
+                if (product.stok > 0) {
+                    cart.push({ ...product, qty: 1 }); 
+                }
+            }
+            updateCartUI();
+            document.getElementById('cart-sidebar').classList.add('active');
+            document.getElementById('cart-overlay').classList.add('active');
+        }
+
+        function changeQty(id, delta) {
+            const item = cart.find(item => item.id === id);
+            const product = products.find(p => p.id === id);
+            
+            if (item) {
+                if (delta > 0 && item.qty >= product.stok) {
+                    alert('Maksimal stok tercapai!');
+                    return;
+                }
+                item.qty += delta;
+                if (item.qty <= 0) cart = cart.filter(i => i.id !== id);
+                updateCartUI();
+            }
+        }
+
+        function updateCartUI() {
+            document.getElementById('cart-count').innerText = cart.reduce((sum, item) => sum + item.qty, 0);
+            const container = document.getElementById('cart-items');
+            
+            if (cart.length === 0) {
+                container.innerHTML = '<p style="color: var(--secondary); text-align: center; margin-top: 2rem; font-size:0.9rem;">Keranjang masih kosong.</p>';
+                document.getElementById('cart-total').innerText = '0';
+                return;
+            }
+
+            let total = 0;
+            container.innerHTML = cart.map(item => {
+                total += item.price * item.qty;
+                return `
+                    <div class="cart-item">
+                        <img src="${item.image}" alt="${item.name}">
+                        <div class="cart-item-details">
+                            <h4>${item.name}</h4>
+                            <div class="cart-item-price">Rp ${item.price.toLocaleString()}</div>
+                            <div class="qty-controls">
+                                <button class="qty-btn" onclick="changeQty(${item.id}, -1)">-</button>
+                                <div class="qty-value">${item.qty}</div>
+                                <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            document.getElementById('cart-total').innerText = total.toLocaleString();
+        }
+
+        // Fungsi Checkout dari Keranjang Belanja
+        function checkoutWhatsApp() {
+            if (cart.length === 0) { alert('Keranjang belanja masih kosong!'); return; }
+            let message = "Halo Kak CS Tjoen's, saya mau pesan produk berikut:%0A%0A";
+            let total = 0;
+            cart.forEach(item => {
+                message += `▪️ ${item.name} (${item.category})%0A   Jumlah: ${item.qty} x Rp ${item.price.toLocaleString()}%0A`;
+                total += item.price * item.qty;
+            });
+            message += `%0A*TOTAL PEMBAYARAN: Rp ${total.toLocaleString()}*%0AMohon info rekening dan format alamat pengirimannya ya kak. Terima kasih!`;
+            
+            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`, '_blank');
+        }
+
+        fetchProducts();
+        fetchReviews();
+
+                // Cek status persetujuan cookie di memori browser (localStorage)
+        function checkCookieConsent() {
+            if (localStorage.getItem('tjoens_cookie_accepted') === 'true') {
+                const cookieBar = document.getElementById('cookie-bar');
+                if (cookieBar) cookieBar.style.display = 'none';
+            }
+        }
+
+        // Fungsi saat tombol "SETUJU & LANJUTKAN" diklik
+        function acceptCookies() {
+            localStorage.setItem('tjoens_cookie_accepted', 'true');
+            const cookieBar = document.getElementById('cookie-bar');
+            if (cookieBar) cookieBar.style.display = 'none';
+        }
+
+        // Panggil fungsi cek cookie otomatis saat pertama kali situs dibuka
+        checkCookieConsent();
+    </script>
+</body>
+</html>
