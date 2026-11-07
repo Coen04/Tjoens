@@ -864,7 +864,7 @@
                     <img src="${p.image}" alt="${p.name}">
                     <div class="product-info">
                         <h3>${p.name}</h3>
-                        <p class="stok-info" style="color: ${isOut ? 'var(--danger)' : 'green'};">${isOut ? 'Stok Habis' : 'Stok Tersedia'}</p>
+                        <p class="stok-info" style="color: ${isOut ? 'var(--danger)' : 'green'};">${isOut ? 'Stok Habis' : p.stok}</p>
                         <div class="price">Rp ${p.price.toLocaleString()}</div>
                     </div>
                     <div class="product-actions" onclick="event.stopPropagation()">
