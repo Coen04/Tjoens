@@ -813,6 +813,12 @@
             document.getElementById('product-modal-overlay').classList.add('active');
         }
 
+        // Tutup Detail Produk Pop-up
+        function closeProductModal() {
+            document.getElementById('product-modal').classList.remove('active');
+            document.getElementById('product-modal-overlay').classList.remove('active');
+        }
+
         // Ambil Data Ulasan
         async function fetchReviews() {
             try {
